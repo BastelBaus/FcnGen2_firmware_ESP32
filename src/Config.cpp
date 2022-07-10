@@ -4,7 +4,7 @@
 
 
 
-const varInfo_t configParameters[] =
+varInfo_t configParameters[] =
                           {  {"c0m0A2LSB","A2LSB_mode0","V/LSB",FLOAT,0},
                              {"c0m1A2LSB","A2LSB_mode1","V/LSB",FLOAT,0},
                              {"c0m2A2LSB","A2LSB_mode2","V/LSB",FLOAT,0},

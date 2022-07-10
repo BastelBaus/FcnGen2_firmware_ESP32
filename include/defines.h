@@ -12,7 +12,7 @@
 #define PIN_FCT_A_SW2       13
 #define PIN_FCT_A_CS_GEN    33
 #define PIN_FCT_A_CS_POTI   32
-#define PIN_FCT_A_PWM       14 
+#define PIN_FCT_A_PWM       14
 
 #define PIN_FCT_B_SW1        2
 #define PIN_FCT_B_SW2       15
@@ -33,6 +33,8 @@
 
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
 #define SCREEN_HEIGHT 64 // OLED display height, in pixels
+#define OLED_RESET     -1 // Reset pin # (or -1 if sharing Arduino reset pin)
+
 
 #define AD9833_INIT_FREQ    1000 // Hz
 
@@ -83,8 +85,8 @@
 #define TFT_RST        17
 #define TFT_DC         16
 #define TFT_CS         2
-                                            
-  
+
+
 
 #define COLOR1 ST7735_WHITE
 #define COLOR2 ST7735_BLACK

@@ -3,6 +3,8 @@
 
 #include <Arduino.h>
 
+void handleSerial(void);
+
 class MySerial {
   public:
     void begin(void);
@@ -17,7 +19,7 @@ class MySerial {
 
     void info(String s);
     void info(String s1,String s2);
-    void info(String s1,int s2); 
+    void info(String s1,int s2);
 
     void command(String s);
 

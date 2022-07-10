@@ -2,9 +2,11 @@
 #include "MySerial.h"
 #include "Config.h"
 #include "defines.h"
+#include "handleControls.h"
+
 
 void MySerial::begin(void) {
-  Serial.begin(115200);  
+  Serial.begin(115200);
 }
 
 
@@ -20,8 +22,6 @@ void MySerial::debug(String s) {
   Serial.println(s);
   Serial.flush();
 }
-
-
 
 void MySerial::error(String s1, String s2) {
   this->error(s1+s2);
@@ -51,8 +51,22 @@ void MySerial::info(String s) {
 
 void MySerial::command(String s) {
   Serial.println(s);
-  Serial.flush();  
+  Serial.flush();
 }
 
+
+void handleSerial(void) {
+  while ( Serial.available() ) {
+    char r = Serial.read();
+    if ( (r == '\r') || (r == '\n') ) {
+      if (command.length() > 0) {
+        mySerial.command(handleCommand(command));
+        command = "";
+      }
+      return;
+    }
+    command += r;
+  } // while ( Serial.available() ) {
+} // void handleSerial(void) {
 
 MySerial mySerial;

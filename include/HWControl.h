@@ -83,9 +83,9 @@ class HWControl {
    void setOffsetStageSW(bool on = true); // SW1
    void setGainStageSW(bool on = true);   // SW2
 
-   void setFrequency(uint32_t frequency) { gen.SetFrequency ( REG0, frequency ); };
-   void setGain(uint8_t gain) { poti.setWiper( gain ); };
-   void setOffset(uint8_t offset) { ledcWrite(CHANNEL, offset ); };
+   void setFrequency(uint32_t frequency); // { gen.SetFrequency ( REG0, frequency ); };
+   void setGain(uint8_t gain); // { poti.setWiper( gain ); };
+   void setOffset(uint8_t offset); // { ledcWrite(CHANNEL, offset ); };
    
    void setSignalType(signaltype_t mode);
    inline void setSignalTypeSinus()    { setSignalType(SIN); };

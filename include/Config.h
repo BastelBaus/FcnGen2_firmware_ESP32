@@ -9,15 +9,15 @@ typedef enum {STRING=1,FLOAT=2,INT=3} var_t;
 
 
 typedef struct {
-  const char* id;
-  const char* name;
-  const char* unit;
-  const var_t type;
-  const uint8_t group;
+  String id;
+  String name;
+  String unit;
+  var_t type;
+  uint8_t group;
 } varInfo_t;
 
 
-extern const varInfo_t configParameters[];
+extern varInfo_t configParameters[];
 
 class MyPreferences : public Preferences {
   public:

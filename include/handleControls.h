@@ -5,6 +5,5 @@
 #include <Arduino.h>
 
 String handleCommand(String command);
-void handleSerial(void);
 
 #endif

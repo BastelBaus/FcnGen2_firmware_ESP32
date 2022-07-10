@@ -1,3 +1,48 @@
+/ https://github.com/nkolban/ESP32_BLE_Arduino/tree/master/examples
+#include <BLEDevice.h>
+#include <BLEUtils.h>
+#include <BLEScan.h>
+#include <BLEAdvertisedDevice.h>
+#include <BLEServer.h>
+#include <BLE2902.h>
+//#include <BluetoothSerial.h>
+
+
+BLEServer* pServer = NULL;
+BLECharacteristic* pCharacteristic = NULL;
+bool deviceConnected = false;
+bool oldDeviceConnected = false;
+uint32_t value = 0;
+
+// See the following for generating UUIDs:
+// https://www.uuidgenerator.net/
+
+#define SERVICE_UUID        "4fafc201-1fb5-459e-8fcc-c5c9c331914b"
+#define CHARACTERISTIC_UUID "beb5483e-36e1-4688-b7f5-ea07361b26a8"
+
+
+#if !defined(CONFIG_BT_ENABLED) || !defined(CONFIG_BLUEDROID_ENABLED)
+#error Bluetooth is not enabled! Please run `make menuconfig` to and enable it
+#endif
+
+//BluetoothSerial SerialBT;
+class MyServerCallbacks: public BLEServerCallbacks {
+    void onConnect(BLEServer* pServer) {
+      deviceConnected = true;
+    };
+
+    void onDisconnect(BLEServer* pServer) {
+      deviceConnected = false;
+    }
+};
+
+class MyAdvertisedDeviceCallbacks: public BLEAdvertisedDeviceCallbacks {
+    void onResult(BLEAdvertisedDevice advertisedDevice) {
+      Serial.printf("Advertised Device: %s \n", advertisedDevice.toString().c_str());
+    }
+};
+
+
 /*
   int scanTime = 5; //In seconds
   BLEScan* pBLEScan;
@@ -44,10 +89,10 @@
   pAdvertising->setMinPreferred(0x0);  // set value to 0x00 to not advertise this parameter
   BLEDevice::startAdvertising();
   Serial.println("Waiting a client connection to notify...");
-  
+
 */
 
-/*  
+/*
   SerialBT.begin("ESP32test"); //Bluetooth device name
   #define BT_DISCOVER_TIME  10000
   Serial.println("Starting discover...");
