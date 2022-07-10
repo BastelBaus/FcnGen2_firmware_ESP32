@@ -17,7 +17,7 @@ const varInfo_t configParameters[] =
                              {"c0m1O2LSBgain","O2LSB_gain_mode1","LSB/V",FLOAT,0},
                              {"c0m2O2LSBgain","O2LSB_gain_mode2","LSB/V",FLOAT,0},
                              {"c0m3O2LSBgain","O2LSB_gain_mode3","LSB/V",FLOAT,0},
-                             
+
                              {"c1m0A2LSB","A2LSB_mode0","LSB/V",FLOAT,1},
                              {"c1m1A2LSB","A2LSB_mode1","LSB/V",FLOAT,1},
                              {"c1m2A2LSB","A2LSB_mode2","LSB/V",FLOAT,1},
@@ -30,16 +30,16 @@ const varInfo_t configParameters[] =
                              {"c1m1O2LSBgain","O2LSB_gain_mode1","LSB/V",FLOAT,1},
                              {"c1m2O2LSBgain","O2LSB_gain_mode2","LSB/V",FLOAT,1},
                              {"c1m3O2LSBgain","O2LSB_gain_mode3","LSB/V",FLOAT,1},
-                             
+
                              {"ssid1","SSID1","",STRING,2},
                              {"pass1","PASS1","",STRING,2},
                              {"ssid2","SSID2","",STRING,2},
                              {"pass2","PASS2","",STRING,2},
                              {"ssid3","SSID3","",STRING,2},
                              {"pass3","PASS3","",STRING,2}
-                                                
+
                           };
-                         
+
 uint8_t n_configParameters = sizeof(configParameters)/sizeof(configParameters[0]);
 
 
@@ -62,7 +62,7 @@ bool Config::updateConfig(String val,String newVal) {
 bool Config::readConfig(String val,varInfo_t* res) {
   for(uint8_t k=0; k< n_configParameters ;k++) {
       if( String(configParameters[k].id) == val) {
-        (*res) = configParameters[k];
+        //(*res) = configParameters[k];
         return true;
       } // if( configParameters[k].group == channel) {
   } //for(uint8_t k=0; k++;k<n) {
@@ -77,7 +77,7 @@ const char* config_namespace = "mywlan";
 Config conf;
 
 
-Config::Config() {   
+Config::Config() {
 }
 
 
@@ -96,9 +96,9 @@ bool Config::load() {
     String pass = String("pass")+String(k+1);
     String ssid = String("ssid")+String(k+1);
     if ( (prefs.getString(ssid.c_str(), wlan[k].ssid, 32) == 0) ||
-         (prefs.getString(pass.c_str(), wlan[k].password, 63) == 0)) 
+         (prefs.getString(pass.c_str(), wlan[k].password, 63) == 0))
       { mySerial.error("Failed to load wlan parameters");
-        //return false; 
+        //return false;
        }
   } // for(uint8_t k=0; k<3; k++) {
 
@@ -106,7 +106,7 @@ bool Config::load() {
     channel[0][1].A2LSB = prefs.getFloat("c0m1A2LSB", 0);
     channel[0][2].A2LSB = prefs.getFloat("c0m2A2LSB", 0);
     channel[0][3].A2LSB = prefs.getFloat("c0m3A2LSB", 0);
-    
+
     channel[1][0].A2LSB = prefs.getFloat("c1m0A2LSB", 0);
     channel[1][1].A2LSB = prefs.getFloat("c1m1A2LSB", 0);
     channel[1][2].A2LSB = prefs.getFloat("c1m2A2LSB", 0);
@@ -120,7 +120,7 @@ bool Config::load() {
     channel[0][1].O2LSBgain = prefs.getFloat("c0m1O2LSBgain", 0);
     channel[0][2].O2LSBgain = prefs.getFloat("c0m2O2LSBgain", 0);
     channel[0][3].O2LSBgain = prefs.getFloat("c0m3O2LSBgain", 0);
-    
+
     channel[1][0].O2LSBofs = prefs.getFloat("c1m0O2LSBofs", 0);
     channel[1][1].O2LSBofs = prefs.getFloat("c1m1O2LSBofs", 0);
     channel[1][2].O2LSBofs = prefs.getFloat("c1m2O2LSBofs", 0);
@@ -129,23 +129,23 @@ bool Config::load() {
     channel[1][1].O2LSBgain = prefs.getFloat("c1m1O2LSBgain", 0);
     channel[1][2].O2LSBgain = prefs.getFloat("c1m2O2LSBgain", 0);
     channel[1][3].O2LSBgain = prefs.getFloat("c1m3O2LSBgain", 0);
-        
+
 
   return true;
 }
 
 bool Config::updateFloat(float v, const char* key) {
   //if ( ! prefs.begin(config_namespace) ) ERROR_AND_RETURN(F("could not initialize section"));
-  prefs.putFloat(key,v);  
+  prefs.putFloat(key,v);
   return load();
 }
 
 bool Config::updateInt(int32_t v, const char* key) {
-  prefs.putInt(key,v);  
+  prefs.putInt(key,v);
   return load();
 }
 bool Config::updateString(String v, const char* key) {
-  prefs.putString(key,v);  
+  prefs.putString(key,v);
   return load();
 }
 
@@ -154,17 +154,17 @@ bool Config::updateString(String v, const char* key) {
 
 float Config::readFloat(const char* key) {
   //if ( ! prefs.begin(config_namespace) ) ERROR_AND_RETURN(F("could not initialize section"));
-  return prefs.getFloat(key,0);  
+  return prefs.getFloat(key,0);
 }
 
 int32_t Config::readInt(const char* key) {
   //if ( ! prefs.begin(config_namespace) ) ERROR_AND_RETURN(F("could not initialize section"));
-  return prefs.getInt(key,0);  
+  return prefs.getInt(key,0);
 }
 
 String Config::readString(const char* key) {
   //if ( ! prefs.begin(config_namespace) ) ERROR_AND_RETURN(F("could not initialize section"));
-  String ret = prefs.getString(key,String("n/a"));  
+  String ret = prefs.getString(key,String("n/a"));
   //mySerial.debug("Key:  ", key);
   //mySerial.debug("Ret:  ", ret);
   return ret;
@@ -197,7 +197,3 @@ bool Config::store(void) {
 
   return true  ;
 }
-
-
-
-    
