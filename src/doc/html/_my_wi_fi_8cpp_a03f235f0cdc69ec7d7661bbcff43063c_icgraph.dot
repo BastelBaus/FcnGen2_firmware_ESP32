@@ -1,0 +1,11 @@
+digraph "socketServer"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node50 [label="socketServer",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node50 -> Node51 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node51 [label="initWiFi",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_my_wi_fi_8h.html#a2865b7751852a7b6bda7356cddefff5d"];
+  Node50 -> Node52 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node52 [label="handleSocketClient",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_my_wi_fi_8h.html#ac83abf0f34d8a4da2128e9e70a4f3d41"];
+}

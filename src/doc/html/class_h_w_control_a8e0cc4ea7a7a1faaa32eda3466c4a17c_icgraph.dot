@@ -1,0 +1,17 @@
+digraph "HWControl::setOffsetStage"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node130 [label="HWControl::setOffsetStage",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node130 -> Node131 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node131 [label="HWControl::setOutputMode",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_h_w_control.html#afad43b4ba17c605b26e898e6b638b225"];
+  Node131 -> Node132 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node132 [label="channelCommand",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$handle_controls_8cpp.html#ac86dda0ebfc3d22905317403e9344458"];
+  Node132 -> Node133 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node133 [label="handleCommand",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$handle_controls_8h.html#a4acbbcfe3d8e6d51b3b88c436394f69c"];
+  Node133 -> Node134 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node134 [label="handleSerial",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$handle_controls_8h.html#adfe2fbf5c353b826657ce504ad1713ee"];
+  Node133 -> Node135 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node135 [label="handleSocketClient",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_my_wi_fi_8h.html#ac83abf0f34d8a4da2128e9e70a4f3d41"];
+}

@@ -1,0 +1,44 @@
+digraph "channelCommand"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node0 [label="channelCommand",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node0 -> Node1 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 [label="HWControl::setAmplitude",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_h_w_control.html#a78b97b159d88b0c1b7d8738469f439cb"];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="HWControl::amplitude2LSB",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_h_w_control.html#acaddc67717442e3f887a7afd197c7b5f"];
+  Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="MCP41_Simple::setWiper",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_m_c_p41___simple.html#a923cfddf6a7cb916b24ed6aed6d046af"];
+  Node3 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="MCP41_Simple::transfer",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_m_c_p41___simple.html#a8149dcb550709b71f005b7a21c2be775"];
+  Node1 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="MySerial::debug",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_my_serial.html#af38ce094a38d6c8e2fc647932c1a2c5c"];
+  Node0 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="HWControl::setOffset",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_h_w_control.html#ad28a55ee9d035a58b31c94cc5c8801c0"];
+  Node6 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="HWControl::offset2LSB",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_h_w_control.html#a0d0cafdd7e29ef228d82d9d1a1776f07"];
+  Node6 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node0 -> Node8 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="HWControl::setFrequency",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_h_w_control.html#a820a79dfebbd28863448662a1ee4034d"];
+  Node0 -> Node9 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="splitString",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_utils_8cpp.html#a8b2a3fe5a0218a2e110197d7a4c33f04"];
+  Node0 -> Node10 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="HWControl::getFrequencyLimits",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_h_w_control.html#a646f2d55f551297bf14fcc08b12fb54d"];
+  Node0 -> Node11 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="HWControl::getAmplitudeLimits",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_h_w_control.html#ab57abdc6474e9a8478f3e3acd776f217"];
+  Node0 -> Node12 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="HWControl::getOffsetLimits",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_h_w_control.html#a13664ae4169409d1bbac6005642fd259"];
+  Node0 -> Node13 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node13 [label="HWControl::enableOutput",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_h_w_control.html#aa45e75cd9ccbf1300c74c2a0706e88d5"];
+  Node0 -> Node14 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node14 [label="HWControl::setMode",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_h_w_control.html#ac5d8c515ee016990e60b1c3f15d23d88"];
+  Node0 -> Node15 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node15 [label="HWControl::setOutputMode",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_h_w_control.html#afad43b4ba17c605b26e898e6b638b225"];
+  Node15 -> Node16 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node16 [label="HWControl::setOffsetStage",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_h_w_control.html#a8e0cc4ea7a7a1faaa32eda3466c4a17c"];
+  Node16 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node15 -> Node17 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node17 [label="HWControl::setGainStage",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_h_w_control.html#a1b695d7490902fc9d04b0bc1bea7f53f"];
+  Node17 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

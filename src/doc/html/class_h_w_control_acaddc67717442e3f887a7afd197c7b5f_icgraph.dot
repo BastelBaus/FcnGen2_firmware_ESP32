@@ -1,0 +1,17 @@
+digraph "HWControl::amplitude2LSB"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node12 [label="HWControl::amplitude2LSB",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node12 -> Node13 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node13 [label="HWControl::setAmplitude",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_h_w_control.html#a78b97b159d88b0c1b7d8738469f439cb"];
+  Node13 -> Node14 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node14 [label="channelCommand",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$handle_controls_8cpp.html#ac86dda0ebfc3d22905317403e9344458"];
+  Node14 -> Node15 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node15 [label="handleCommand",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$handle_controls_8h.html#a4acbbcfe3d8e6d51b3b88c436394f69c"];
+  Node15 -> Node16 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node16 [label="handleSerial",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$handle_controls_8h.html#adfe2fbf5c353b826657ce504ad1713ee"];
+  Node15 -> Node17 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node17 [label="handleSocketClient",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_my_wi_fi_8h.html#ac83abf0f34d8a4da2128e9e70a4f3d41"];
+}

@@ -1,0 +1,14 @@
+digraph "C:/Users/pagan/Desktop/FcnGen2/ESP32_Firmware/firmware_0.1/HWControl.h"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node5 [label="C:/Users/pagan/Desktop\l/FcnGen2/ESP32_Firmware\l/firmware_0.1/HWControl.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node5 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="C:/Users/pagan/Desktop\l/FcnGen2/ESP32_Firmware\l/firmware_0.1/controlTask.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$control_task_8cpp.html"];
+  Node5 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="C:/Users/pagan/Desktop\l/FcnGen2/ESP32_Firmware\l/firmware_0.1/handleControls.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$handle_controls_8cpp.html"];
+  Node5 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="C:/Users/pagan/Desktop\l/FcnGen2/ESP32_Firmware\l/firmware_0.1/HWControl.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_h_w_control_8cpp.html"];
+  Node5 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="C:/Users/pagan/Desktop\l/FcnGen2/ESP32_Firmware\l/firmware_0.1/OutputMode.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_output_mode_8h.html"];
+}

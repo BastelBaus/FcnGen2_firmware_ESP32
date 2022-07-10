@@ -1,0 +1,14 @@
+digraph "HWControl::setOutputMode"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node136 [label="HWControl::setOutputMode",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node136 -> Node137 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node137 [label="HWControl::setOffsetStage",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_h_w_control.html#a8e0cc4ea7a7a1faaa32eda3466c4a17c"];
+  Node137 -> Node138 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node138 [label="MySerial::debug",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_my_serial.html#af38ce094a38d6c8e2fc647932c1a2c5c"];
+  Node136 -> Node139 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node139 [label="HWControl::setGainStage",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_h_w_control.html#a1b695d7490902fc9d04b0bc1bea7f53f"];
+  Node139 -> Node138 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}
