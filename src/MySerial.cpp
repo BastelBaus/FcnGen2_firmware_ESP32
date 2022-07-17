@@ -3,10 +3,12 @@
 #include "Config.h"
 #include "defines.h"
 #include "handleControls.h"
-
+#include <String>
 
 void MySerial::begin(void) {
   Serial.begin(115200);
+  inputBuffer.reserve(100);
+  inputBuffer = "";
 }
 
 
@@ -55,17 +57,19 @@ void MySerial::command(String s) {
 }
 
 
-void handleSerial(void) {
+void handleSerial(void) { mySerial.handle(); };
+
+void MySerial::handle(void) {
   while ( Serial.available() ) {
     char r = Serial.read();
     if ( (r == '\r') || (r == '\n') ) {
-      if (command.length() > 0) {
-        mySerial.command(handleCommand(command));
-        command = "";
+      if (inputBuffer.length() > 0) {
+        mySerial.command(handleCommand(inputBuffer));
+        inputBuffer = "";
       }
       return;
     }
-    command += r;
+    inputBuffer += r;
   } // while ( Serial.available() ) {
 } // void handleSerial(void) {
 

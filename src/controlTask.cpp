@@ -1,13 +1,13 @@
 
 #include "controlTask.h"
-#include "HWControl.h"
+#include "control/HWControl.h"
 #include "Utils.h"
 
 bool aliveFlag = false;
 TaskHandle_t controlTaskHandle;
 
 void startControlTask(void) {
-  Serial.println("Starting control task");  
+  Serial.println("Starting control task");
   //disableCore0WDT(); // ToDo: better yielkd WDT in each loop
   xTaskCreatePinnedToCore(
       controlTaskLoop,    /* Function to implement the task */

@@ -1,30 +1,13 @@
 #include "handleControls.h"
 
-#include "HWControl.h"
+#include "control/HWControl.h"
 #include <Arduino.h>
 #include "Utils.h"
 #include "Config.h"
+#include "defines.h"
 #include "MySerial.h"
-String command = "";
+#include "control/OutputModes.h"
 
-/* commands
- *  !x\n  : restart
- *    returns:  >reboot\n
- *  !y\n  : search I2C devices
- *    returns:  >0x3C,0x37\n (list of I2C addersses
- *  >1:*\n channel 1
- *  >2:*\n channel 2
- *  >3:*\n both channels
- *     A?
- *     O?
- *     F?
- *     m?\n  mode (? = sin,square,triangle)
- *     o?\n  output mode (? = 0,1,2,3)
- *     e?\n  enable output (? = 0,1,empty)
- *     q?\n  query parameters (? = comma seperated list of maxf,minf, fo 3 alternating 1 and 2 channel for each value)
- *  $: configuration commands
- *  ?: status commands
- */
 
 
 String readConfigCommand(String command) {
@@ -64,20 +47,12 @@ String writeConfigCommand(String command) {
 
 
 
-// "!x": restart ESP
-// "!A": response with an alive message
-// "!A:[t:uint32_t]": response every t ms with an alive message t>0
-// "!A:0": turn of alive responce
-// L[t:uint8_t]:  return list of configuration variables,
-//                  t=0 : channel 0
-//                  t=1 : channel 1
-//                  t=2 : generic
-// D: return error and output info, debug and error messages
+
 String controlCommand(String command) {
   switch ( command[0] ) {
-    case 'x': ESP.restart();
-              return RESPONCE_OK("x","doing reboot");
-              break;
+    case 'x': // to do, sentz back message before restarting .... but here we do not know the interface, maybe to all ???
+              ESP.restart();
+              return RESPONCE_OK("x","doing reboot"); // not effectives
     case 'A': if ( command.length()>1 ) {
                 uint32_t a = command.substring(1).toInt();
                 myWDG.set_looptime(a);
@@ -107,21 +82,17 @@ String controlCommand(String command) {
 
 String channelCommand(String command) {
 
-  // extract channel to be controlled
-  uint8_t ch = 0;
-  char chStr = command[0];
-  switch(chStr) {
-    case '1': ch=1; break;
-    case '2': ch=2; break;
-    case '3': ch=3; break;
-    default: return RESPONCE_ERR(ERROR_COMMAND_UNKOWN_CHANNEL,command);
-  }
+  // note: comand>0 ensued ???
+  const char& chStr = command[0];
+  uint8_t     ch    = (chStr=='1'?1:(chStr=='2'?2:3));
+
   // check if command is given
   if (command[1] != ':')  return RESPONCE_ERR(ERROR_COMMAND_SYNTAX,command);
-  if (command.length()<4) return RESPONCE_ERR(ERROR_COMMAND_INCOMPLETE,command);
-  char code = command[2];
-  String params = command.substring(4);
-  String responce("");
+  if (command.length()<3) return RESPONCE_ERR(ERROR_COMMAND_INCOMPLETE,command);
+  const char& code = command[2];
+  String params = (command.length()>3 ?  command.substring(4) : "");
+
+  String responce(""); responce += code;
   switch( code ) {
       case 'A': { float value = params.toFloat(); responce += code;responce += value;
                   //if((ch%2) == 1) { hwc1.setAmplitude(value); }
@@ -138,93 +109,103 @@ String channelCommand(String command) {
                   //if((ch&2) == 2) { hwc2.setFrequency(value); }
                   responce+="F:";responce+=String(value);
                 } break; // case 'F':
-      case 'q': { // query limits
-                  String list = params;
-                  int i = 0;
-                  while (true) {
-                    String par=splitString(list,',',i);
 
-                    if (par == String("")) break;
-                    if (i!=0) responce += ":";
-                    //responce += par + "=";
-
-                    if( par == "maxF")  {
-                      float Fmin, Fmax;
-                      //if((ch%2) == 1) { hwc1.getFrequencyLimits(&Fmin,&Fmax); responce += Fmax; }
-                      //if(ch==3) responce += ":";
-                      //if((ch&2) == 2) { hwc2.getFrequencyLimits(&Fmin,&Fmax); responce += Fmax; }
-                    } else if( par == "minF")  {
-                      float Fmin, Fmax;
-                      //if((ch%2) == 1) { hwc1.getFrequencyLimits(&Fmin,&Fmax); responce += Fmin; }
-                      //if(ch==3) responce += ":";
-                      //if((ch&2) == 2) { hwc2.getFrequencyLimits(&Fmin,&Fmax); responce += Fmin; }
-                    } else if( par == "maxA")  {
-                      float Amin, Amax;
-                      //if((ch%2) == 1) { hwc1.getAmplitudeLimits(&Amin,&Amax); responce += Amax; }
-                      //if(ch==3) responce += ":";
-                      //if((ch&2) == 2) { hwc2.getAmplitudeLimits(&Amin,&Amax); responce += Amax; }
-                    } else if( par == "minA")  {
-                      float Amin, Amax;
-                      //if((ch%2) == 1) { hwc1.getAmplitudeLimits(&Amin,&Amax); responce += Amin; }
-                      //if(ch==3) responce += ":";
-                      //if((ch&2) == 2) { hwc2.getAmplitudeLimits(&Amin,&Amax); responce += Amin; }
-                    } else if( par == "maxO")  {
-                      float Omin, Omax;
-                      //if((ch%2) == 1) { hwc1.getOffsetLimits(&Omin,&Omax); responce += Omax; }
-                      //if(ch==3) responce += ":";
-                      //if((ch&2) == 2) { hwc2.getOffsetLimits(&Omin,&Omax); responce += Omax; }
-                    } else if( par == "minO")  {
-                      float Omin, Omax;
-                      //if((ch%2) == 1) { hwc1.getOffsetLimits(&Omin,&Omax); responce += Omin; }
-                      //if(ch==3) responce += ":";
-                      //if((ch&2) == 2) { hwc2.getOffsetLimits(&Omin,&Omax); responce += Omin; }
-                    } else {
-                      responce += "*";
-                    }
-
-                    i++;
-                  }// while (true) {
-                 }; break; // case 'q':
-      case 'e': { bool en=true;
-                  if (! (params.length()<1) ) {
-                    switch(params[0]) {
-                      case '0': en= false;  break;
-                      case '1': en= true;  break;
-                      default: return RESPONCE_ERR(ERROR_COMMAND_SYNTAX,command);
-                    }
-                  } // if (params.length()>=1) {
-                  if((ch%2) == 1) hwc1.enableOutput(en);
-                  if((ch&2) == 2) hwc2.enableOutput(en);
+      case 'e': { bool en = ( params.length()<1 || params[0] == '1' );
+                  if IS_CHANNEL1(ch) outMode[0]->enableOutput(en);
+                  if IS_CHANNEL2(ch) outMode[1]->enableOutput(en);
+                  ADD_PARAMETER(responce, en);
                 }; break; // case 'e':
-      case 'm': { // chnage signal mode (sin, triangle, ...
-                  String mo = params;
-                  Serial.println(mo);
+
+    case 'c': // return number of modes available for all channels
+              if IS_CHANNEL1(ch) ADD_PARAMETER(responce, outMode[0].count());
+              if IS_CHANNEL2(ch) ADD_PARAMETER(responce, outMode[1].count());
+              break; // case 'c': parameter _c_ount
+
+    case 'n': { // get mode name
+                if ( params.length() == 0 ) {
+                  if IS_CHANNEL1(ch) ADD_PARAMETER(responce, outMode[0]->getName() );
+                  if IS_CHANNEL2(ch) ADD_PARAMETER(responce, outMode[1]->getName() );
+                } else {
+                  uint8_t m = params.toInt();
+                  uint8_t max[] = { outMode[0].count(), outMode[1].count() }   ;
+                  if IS_CHANNEL1(ch) ADD_PARAMETER(responce, outMode[0][ (m<max[0]?m:0) ]->getName() );
+                  if IS_CHANNEL2(ch) ADD_PARAMETER(responce, outMode[1][ (m<max[1]?m:0) ]->getName() );
+                }
+              } break;
+
+     case 'p': { // get parameter properties
+                String subCom = splitString(params,':',0);
+                String subPar = splitString(params,':',1);
+                int    n      = subPar.toInt();
+                    // ToDO: error handling
+                    // ToDO: multiple parameter at once
+                ADD_PARAMETER(responce,subCom);
+                if (subCom=="c") { // name
+                  if IS_CHANNEL1(ch)  ADD_PARAMETER(responce,outMode[0]->paramList().size() );
+                  if IS_CHANNEL2(ch)  ADD_PARAMETER(responce,outMode[1]->paramList().size() );
+                } else if (subCom=="n") { // name
+                    if IS_CHANNEL1(ch)  ADD_PARAMETER(responce,outMode[0]->paramList()[n]->getName() );
+                    if IS_CHANNEL2(ch)  ADD_PARAMETER(responce,outMode[1]->paramList()[n]->getName() );
+                  } else if (subCom=="u") { // unit
+                    if IS_CHANNEL1(ch)  ADD_PARAMETER(responce,outMode[0]->paramList()[n]->getUnit() );
+                    if IS_CHANNEL2(ch)  ADD_PARAMETER(responce,outMode[1]->paramList()[n]->getUnit() );
+                  } else if (subCom=="t") { // type
+                    if IS_CHANNEL1(ch)  ADD_PARAMETER(responce,outMode[0]->paramList()[n]->getType() );
+                    if IS_CHANNEL2(ch)  ADD_PARAMETER(responce,outMode[1]->paramList()[n]->getType() );
+                  } else if (subCom=="v") { // value
+                    if IS_CHANNEL1(ch)  ADD_PARAMETER(responce,outMode[0]->paramList()[n]->getAsString() );
+                    if IS_CHANNEL2(ch)  ADD_PARAMETER(responce,outMode[1]->paramList()[n]->getAsString() );
+                  } else if (subCom=="a") { // max
+                    if IS_CHANNEL1(ch)  ADD_PARAMETER(responce,outMode[0]->paramList()[n]->getMaxAsString() );
+                    if IS_CHANNEL2(ch)  ADD_PARAMETER(responce,outMode[1]->paramList()[n]->getMaxAsString() );
+                  } else if (subCom=="i") { // min
+                    if IS_CHANNEL1(ch)  ADD_PARAMETER(responce,outMode[0]->paramList()[n]->getMinAsString() );
+                    if IS_CHANNEL2(ch)  ADD_PARAMETER(responce,outMode[1]->paramList()[n]->getMinAsString() );
+                  } else if (subCom=="s") { // step
+                    if IS_CHANNEL1(ch)  ADD_PARAMETER(responce,outMode[0]->paramList()[n]->getStepAsString() );
+                    if IS_CHANNEL2(ch)  ADD_PARAMETER(responce,outMode[1]->paramList()[n]->getStepAsString() );
+                } else {
+                  uint8_t id = subCom.toInt();
+                  if IS_CHANNEL1(ch) outMode[0]->paramList()[id]->set(subPar);
+                  if IS_CHANNEL2(ch) outMode[1]->paramList()[id]->set(subPar);
+                    // ToDO: error handling
+                    // return RESPONCE_ERR(ERROR_COMMAND_SYNTAX,command);
+                    // ToDO: return value which is set afterwarsd ! ADD_PARAMETER(responce,outMode[0]
+                }
+            } break; // case 'p': // get parameter properties
+
+      case 't': { // change signal mode (sin, triangle, ...
                   signaltype_t m = SIN;
-                  //if      (mo == "sin")      m = SIN;
-                  //else if (mo == "triangle") m = TRIANGLE;
-                  //else return RESPONCE_ERR(ERROR_COMMAND_SYNTAX,command);
-                  //else if (mo == "square")   m = SQUARE;
-                  //if((ch%2) == 1) hwc1.setMode(m);
-                  //if((ch&2) == 2) hwc2.setMode(m);
-                  responce += code;responce += String(m);
+                  if      (params == "s") m = SIN;
+                  else if (params == "t") m = TRIANGLE;
+                  else if (params == "q") m = SQUARE;
+                  else return RESPONCE_ERR(ERROR_COMMAND_SYNTAX,command);
+                  if IS_CHANNEL1(ch)  outMode[0]->setSignalType(m);
+                  if IS_CHANNEL2(ch)  outMode[1]->setSignalType(m);
+                  ADD_PARAMETER(responce,m);
                 } break; // case 'm':
-      case 'o': { // changed output mode
-                  uint8_t m;
-                  if (params.length()<1) return RESPONCE_ERR(ERROR_COMMAND_INCOMPLETE,command);
-                  switch(params[0]) {
-                    case '0': m = 0; break;
-                    case '1': m = 1; break;
-                    case '2': m = 2; break;
-                    case '3': m = 3; break;
-                    default: return RESPONCE_ERR(ERROR_COMMAND_UNKNOWN_MODE,command);
-                  } // switch(command[4]) {
-                  //if((ch%2) == 1) hwc1.setOutputMode(m);
-                  //if((ch&2) == 2) hwc2.setOutputMode(m);
-                  responce += code; responce += String(m);
+
+      case 'o': { // set or get output mode by id
+                  if (params.length()<1) {
+                    if IS_CHANNEL1(ch)  ADD_PARAMETER(responce,outMode[0].getMode());
+                    if IS_CHANNEL2(ch)  ADD_PARAMETER(responce,outMode[1].getMode());
+                  } else {
+                    uint8_t m    = params.toInt(); // ToDo: add error handling: a) if string no int and b) if bigger than max value
+                    if IS_CHANNEL1(ch)  {
+                       uint8_t maxM = outMode[0].count(); m = (m<maxM?m:0);
+                       outMode[0].setMode( m ); ADD_PARAMETER(responce,m);
+                    }
+                    if IS_CHANNEL2(ch)  {
+                       uint8_t maxM = outMode[1].count(); m = (m<maxM?m:0);
+                       outMode[1].setMode( m ); ADD_PARAMETER(responce,m);
+                    }
+                  }
                 }; break; // case 'o':
+
       default: return RESPONCE_ERR(ERROR_COMMAND_UNKNOWN,command);
     } // switch( command[3]) {
-  return RESPONCE_OK(chStr,responce);
+  return RESPONCE_OK(chStr,responce); // todo: should be ch ??
+
 } // String handleCommandNew(String command) {
 
 

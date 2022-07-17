@@ -1,4 +1,5 @@
-/ https://github.com/nkolban/ESP32_BLE_Arduino/tree/master/examples
+#include <Arduino.h>
+// https://github.com/nkolban/ESP32_BLE_Arduino/tree/master/examples
 #include <BLEDevice.h>
 #include <BLEUtils.h>
 #include <BLEScan.h>

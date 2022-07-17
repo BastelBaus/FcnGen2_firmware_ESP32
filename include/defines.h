@@ -6,6 +6,8 @@
 #define SOCKET_PORT   2000
 #define WEB_PORT      80
 
+#define CHANNEL_COUNT 2
+
 #define DEFAULT_WATCHDOG_TIME 1000
 
 #define PIN_FCT_A_SW1       12
@@ -70,6 +72,7 @@
 #define ERROR_COMMAND_UNKNOWN_MODE   F("ERROR6: unknown mode")
 #define COMMAND_OK                   F("OK")
 
+#define ADD_PARAMETER(r,par) r += String(":") + String(par)
 
 
 #define RESPONCE_OK(x,y)  ( String(x) + ":"  + COMMAND_OK + ":" + y )
@@ -78,7 +81,8 @@
 #define RESPONCE(x,y) ( String( SYM_RESPONCE ) + x + ":" + y )
 #define RESPONCE_ERROR(CODE,TEXT) ( String( COMMAND_OK ) )
 
-
+#define IS_CHANNEL1(ch) ((ch%2) == 1)
+#define IS_CHANNEL2(ch) ((ch&2) == 2)
 
 #define TFT_MOSI        19
 #define TFT_SCK         21

@@ -1,5 +1,5 @@
 
-#include "HWControl.h"
+#include "control/HWControl.h"
 #include "defines.h"
 #include <Arduino.h>
 #include "Config.h"
@@ -16,16 +16,16 @@ HWControl::HWControl(uint8_t PIN_SW1, uint8_t PIN_SW2, uint8_t PIN_FCTGEN, uint8
   if (spi != NULL) this->spi = spi;
   else this->spi = &SPI;
 
-/*  // some PINs might be configures for JTAG. Put them as normal IO pins
+  // some PINs might be configures for JTAG. Put them as normal IO pins
   // see: https://www.esp32.com/viewtopic.php?t=2687
   PIN_FUNC_SELECT(GPIO_PIN_MUX_REG[this->PIN_SW1], PIN_FUNC_GPIO);
   PIN_FUNC_SELECT(GPIO_PIN_MUX_REG[this->PIN_SW2], PIN_FUNC_GPIO);
   PIN_FUNC_SELECT(GPIO_PIN_MUX_REG[this->PIN_PWM], PIN_FUNC_GPIO);
-*/
-  
+
+
   pinMode(this->PIN_SW1, OUTPUT); digitalWrite(this->PIN_SW1, LOW);
   pinMode(this->PIN_SW2, OUTPUT); digitalWrite(this->PIN_SW2, LOW);
-  
+
   ledcAttachPin(this->PIN_PWM, CHANNEL);
   ledcSetup(CHANNEL, PWM_FREQ , PWM_BITS);
 
@@ -52,56 +52,63 @@ void HWControl::begin( SPIClass* spi) {
 
 
 void HWControl::enableOutput(bool en) {
-  gen.EnableOutput(en); 
+  gen.EnableOutput(en);
 }
 
 
 void HWControl::setOffsetStageSW(bool on) {
+  SW1 = on;
   digitalWrite(this->PIN_SW1, (on ? HIGH : LOW));
   mySerial.debug(String("PIN: ") + String(this->PIN_SW1) + String(" to  ") + String( (on ? HIGH : LOW) ) );
 }
 
 void HWControl::setGainStageSW(bool on) {
+  SW2 = on;
   digitalWrite(this->PIN_SW2, (on ? HIGH : LOW));
   mySerial.debug(String("PIN: ") + String(this->PIN_SW2) + String(" to  ") + String( (on ? HIGH : LOW) ) );
 }
 
-   
-void HWControl::setFrequency(uint32_t frequency) { 
+bool HWControl::getOffsetStageSW(void) { return SW1; } // SW1
+bool HWControl::getGainStageSW(void)   { return SW2; } // SW2
+
+
+
+
+void HWControl::setFrequency(uint32_t frequency) {
   this->f = frequency;
-  gen.SetFrequency ( REG0, this->f); 
+  gen.SetFrequency ( REG0, this->f);
   mySerial.debug(String("AD9833_frequency: ") + String(frequency) );
 };
 
-void HWControl::setGain(uint8_t gain) { 
-  poti.setWiper( gain ); 
+void HWControl::setGain(uint8_t gain) {
+  poti.setWiper( gain );
   mySerial.debug(String("AD9833_gain: ") + String(gain) );
 };
 
-void HWControl::setOffset(uint8_t offset) { 
-  ledcWrite(CHANNEL, offset ); 
+void HWControl::setOffset(uint16_t offset) {
+  ledcWrite(CHANNEL, offset );
   mySerial.debug(String("PWM_offset: ") + String(offset) );
 };
-   
+
 // toDo: AD9833 features only float frequency :-(
 void HWControl::setSignalType(signaltype_t mode) {
   switch(mode) {
     case SIN:      mySerial.debug(String("AD9833_type: sin:") + String(mode) );
-                   gen.ApplySignal(SINE_WAVE, REG0, f); 
+                   gen.ApplySignal(SINE_WAVE, REG0, f);
                    this->mode = mode;
                    break;
     case TRIANGLE: mySerial.debug(String("AD9833_type: triangle:") + String(mode) );
-                   gen.ApplySignal(TRIANGLE_WAVE, REG0, f); 
+                   gen.ApplySignal(TRIANGLE_WAVE, REG0, f);
                    this->mode = mode;
                    break;
     case SQUARE:   mySerial.debug(String("AD9833_type: square:") + String(mode) );
-                   gen.ApplySignal(SQUARE_WAVE, REG0, f); 
+                   gen.ApplySignal(SQUARE_WAVE, REG0, f);
                    this->mode = mode;
                    break;
-    default:       mySerial.debug(String("AD9833_type: ERROR:") + String(mode) );   
+    default:       mySerial.debug(String("AD9833_type: ERROR:") + String(mode) );
   } // switch(mode) {
 }; // void HWControl::setSignalType(signaltype_t mode) {
-  
+
 
 /*
 

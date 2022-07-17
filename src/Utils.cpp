@@ -30,7 +30,7 @@ void myWatchdog::set_looptime(uint32_t time_ms,bool set_on) {
   if (set_on) this->setOn();
   else this->setOff();
 }
-    
+
 
 
 String splitString(String data, char separator, int index) {
@@ -48,9 +48,8 @@ String splitString(String data, char separator, int index) {
 }
 
 /****************************************************************************/
-/* Watchdog on the interfaces                                               */
+/* I2C helper functio                                                       */
 /****************************************************************************/
-
 
 void findI2C(void) {
   byte error, address;
@@ -69,12 +68,17 @@ void findI2C(void) {
       Serial.print("Unknow error at address 0x");
       if (address<16) { Serial.print("0");}
       Serial.println(address,HEX);
-    }    
+    }
   }
   if (nDevices == 0) {
     Serial.println("No I2C devices found\n");
   } else { Serial.println("done\n"); }
 }
+
+
+/****************************************************************************/
+/* Watchdog on the interfaces                                               */
+/****************************************************************************/
 
 /// Source: https://forum.arduino.cc/t/esp32-a-better-way-than-vtaskdelay-to-get-around-watchdog-crash/596889/13
 #include "soc/timer_group_struct.h"
@@ -96,3 +100,12 @@ void feedTheDogs(){
   feedTheDog0();
   feedTheDog1();
 }
+
+/****************************************************************************/
+/* Type identification templates                                            */
+/****************************************************************************/
+
+template<class T>  String typeToString(T a) {return "none";};
+template<>         String typeToString(float a) {return "float";};
+template<>         String typeToString(uint32_t a) {return "uint32_t";};
+template<>         String typeToString(bool a) {return "bool";};

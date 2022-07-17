@@ -2,6 +2,7 @@
 #define __MYSERIAL_H__
 
 #include <Arduino.h>
+#include <String>
 
 void handleSerial(void);
 
@@ -22,6 +23,11 @@ class MySerial {
     void info(String s1,int s2);
 
     void command(String s);
+
+    void handle(void);
+
+  private:
+    String inputBuffer;
 
 };
 
