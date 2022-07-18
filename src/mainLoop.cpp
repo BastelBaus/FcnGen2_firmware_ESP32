@@ -71,13 +71,6 @@ void setup() {
   conf.begin();
   conf.load();
 
-  for(uint k=0; k<1;k++) {
-    memcpy( conf.wlan[k].ssid, ssid[k],33);
-    memcpy( conf.wlan[k].password, password[k],64);
-  }
-  //conf.store();
-
-
   // todo: move all this in the loop to enable
   mySerial.debug("Setting Wifi");
   connectWiFi();
